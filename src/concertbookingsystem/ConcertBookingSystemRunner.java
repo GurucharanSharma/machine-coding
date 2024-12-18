@@ -1,15 +1,10 @@
-import concertbookingsystem.Booking;
-import concertbookingsystem.Concert;
-import concertbookingsystem.ConcertTicketBookingSystem;
-import concertbookingsystem.Seat;
-import concertbookingsystem.SeatStatus;
-import concertbookingsystem.SeatType;
-import concertbookingsystem.User;
+package concertbookingsystem;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class ConcertBookingSystemRunner {
 
   public static void main(String[] args) {
     ConcertTicketBookingSystem system = ConcertTicketBookingSystem.getInstance();

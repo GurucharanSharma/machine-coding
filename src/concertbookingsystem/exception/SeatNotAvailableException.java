@@ -1,4 +1,4 @@
-package concertbookingsystem;
+package concertbookingsystem.exception;
 
 public class SeatNotAvailableException extends RuntimeException {
 

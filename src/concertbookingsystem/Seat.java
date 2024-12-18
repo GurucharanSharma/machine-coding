@@ -1,5 +1,7 @@
 package concertbookingsystem;
 
+import concertbookingsystem.exception.SeatNotAvailableException;
+
 public class Seat {
 
   private final String id;

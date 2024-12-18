@@ -1,5 +1,8 @@
 package concertbookingsystem;
 
+import concertbookingsystem.exception.BookingCancellationException;
+import concertbookingsystem.exception.BookingConfirmationException;
+import concertbookingsystem.exception.BookingRollbackException;
 import java.util.List;
 
 public class Booking {
@@ -27,10 +30,8 @@ public class Booking {
   public void confirm() {
     if (bookingStatus == BookingStatus.PENDING) {
       this.bookingStatus = BookingStatus.CONFIRMED;
-    } else if (bookingStatus == BookingStatus.CONFIRMED) {
-      System.out.println("Booking " + id + " is already confirmed");
     } else {
-      System.out.println("Booking " + id + " has been cancelled. Cannot confirm the booking.");
+      throw new BookingConfirmationException(String.format("The booking %s is in %s state. Unable to confirm booking.", id, bookingStatus));
     }
   }
 
@@ -39,6 +40,17 @@ public class Booking {
       bookingStatus = BookingStatus.CANCELLED;
       seats.forEach(Seat::release);
       System.out.println("Booking " + id + " has been cancelled");
+    } else {
+      throw new BookingCancellationException(String.format("The booking %s is in %s state. Unable to cancel booking.", id, bookingStatus));
+    }
+  }
+
+  public void rollback() {
+    if (bookingStatus == BookingStatus.PENDING) {
+      bookingStatus = BookingStatus.DECLINED;
+      seats.forEach(Seat::release);
+    } else {
+      throw new BookingRollbackException(String.format("The booking %s is in %s state. Unable to decline booking.", id, bookingStatus));
     }
   }
 

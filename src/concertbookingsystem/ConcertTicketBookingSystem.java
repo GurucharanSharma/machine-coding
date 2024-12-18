@@ -69,7 +69,7 @@ public class ConcertTicketBookingSystem {
 
       if (processPayment(booking)) {
         booking.confirm();
-        System.out.printf("Booking with id %s confirmed. Booking details: %s", bookingId, booking);
+        System.out.printf("Booking with id %s confirmed. Booking details: %s\n", bookingId, booking);
 
         return booking;
       } else {

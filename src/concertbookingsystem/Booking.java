@@ -81,4 +81,16 @@ public class Booking {
   public double getTotalPrice() {
     return totalPrice;
   }
+
+  @Override
+  public String toString() {
+    return "Booking{" +
+        "id='" + id + '\'' +
+        ", user=" + user +
+        ", concert=" + concert +
+        ", seats=" + seats +
+        ", totalPrice=" + totalPrice +
+        ", bookingStatus=" + bookingStatus +
+        '}';
+  }
 }

@@ -1,5 +1,6 @@
 package concertbookingsystem;
 
+import concertbookingsystem.common.BookingStatus;
 import concertbookingsystem.exception.BookingCancellationException;
 import concertbookingsystem.exception.BookingConfirmationException;
 import concertbookingsystem.exception.BookingRollbackException;

@@ -1,5 +1,7 @@
 package concertbookingsystem;
 
+import concertbookingsystem.common.SeatStatus;
+import concertbookingsystem.common.SeatType;
 import concertbookingsystem.exception.SeatNotAvailableException;
 
 public class Seat {

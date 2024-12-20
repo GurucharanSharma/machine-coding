@@ -61,6 +61,13 @@ public class HotelManagementRunner {
     System.out.println("\n# Adding guests => ");
     receptionist.addGuests(catalog, guest);
 
+    System.out.println("\n# Creating room => ");
+    Room singleRoom = singleRoomFactory.createRoom(100);
+    Room doubleRoom = doubleRoomFactory.createRoom(200);
+
+    manager.addRoom(catalog, singleRoom);
+    manager.addRoom(catalog, doubleRoom);
+
     System.out.println("\n# Printing catalog => ");
     System.out.println("Guests : " + catalog.getGuestsLookup());
     System.out.println("Employees : " + catalog.getEmployeeLookup());
@@ -68,11 +75,8 @@ public class HotelManagementRunner {
     System.out.println("Available Keys : " + catalog.getAvailableKeys());
     System.out.println("Assigned Keys : " + catalog.getAssignedKeys());
 
-    System.out.println("\n# Creating room => ");
-    Room room = singleRoomFactory.createRoom(100);
-
     System.out.println("\n# Booking room => ");
-    RoomBooking booking = system.bookRoom(guest, room, LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+    RoomBooking booking = system.bookRoom(guest, singleRoom, LocalDateTime.now(), LocalDateTime.now().plusDays(3));
 
     System.out.println("\n# Checking in => ");
     system.checkIn(booking.getBookingId());
@@ -82,10 +86,10 @@ public class HotelManagementRunner {
 
     System.out.println("\n# Adding house keeping => ");
     RoomHouseKeeping roomHouseKeeping = new RoomHouseKeeping(houseKeeper, LocalDateTime.now().minusMinutes(1), "cleaning");
-    room.addHouseKeeping(roomHouseKeeping);
+    singleRoom.addHouseKeeping(roomHouseKeeping);
 
     Service service = new FoodService("Coleslaw sandwich", 35);
-    room.addService(service);
+    singleRoom.addService(service);
 
     System.out.println("\n# Booking Details => ");
     System.out.println(booking);

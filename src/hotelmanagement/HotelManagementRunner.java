@@ -1,10 +1,13 @@
 package hotelmanagement;
 
 import hotelmanagement.catalog.Catalog;
-import hotelmanagement.common.RoomType;
-import hotelmanagement.domain.Room;
 import hotelmanagement.domain.RoomBooking;
 import hotelmanagement.domain.RoomHouseKeeping;
+import hotelmanagement.domain.room.DeluxeRoomFactory;
+import hotelmanagement.domain.room.DoubleRoomFactory;
+import hotelmanagement.domain.room.Room;
+import hotelmanagement.domain.room.SingleRoomFactory;
+import hotelmanagement.domain.room.SuiteRoomFactory;
 import hotelmanagement.notification.Notifier;
 import hotelmanagement.payment.CardPayment;
 import hotelmanagement.person.Account;
@@ -13,14 +16,21 @@ import hotelmanagement.person.employee.HouseKeeper;
 import hotelmanagement.person.employee.Manager;
 import hotelmanagement.person.employee.Receptionist;
 import hotelmanagement.person.employee.Server;
+import hotelmanagement.service.FoodService;
+import hotelmanagement.service.Service;
 import java.time.LocalDateTime;
 
 public class HotelManagementRunner {
 
   public static void main(String[] args) {
-    HotelManagementService service = HotelManagementService.getInstance();
-    Catalog catalog = service.getCatalog();
+    HotelManagementService system = HotelManagementService.getInstance();
+    Catalog catalog = system.getCatalog();
     Notifier notifier = new Notifier();
+
+    SingleRoomFactory singleRoomFactory = new SingleRoomFactory();
+    DoubleRoomFactory doubleRoomFactory = new DoubleRoomFactory();
+    DeluxeRoomFactory deluxeRoomFactory = new DeluxeRoomFactory();
+    SuiteRoomFactory suiteRoomFactory = new SuiteRoomFactory();
 
     System.out.println("# Creating Accounts => ");
     Account guestAccount = Account.createAccount("guest", "guest");
@@ -52,20 +62,20 @@ public class HotelManagementRunner {
     receptionist.addGuests(catalog, guest);
 
     System.out.println("\n# Printing catalog => ");
-    System.out.println(catalog.getGuestsLookup());
-    System.out.println(catalog.getEmployeeLookup());
-    System.out.println(catalog.getRoomsLookup());
-    System.out.println(catalog.getAvailableKeys());
-    System.out.println(catalog.getAssignedKeys());
+    System.out.println("Guests : " + catalog.getGuestsLookup());
+    System.out.println("Employees : " + catalog.getEmployeeLookup());
+    System.out.println("Rooms : " + catalog.getRoomsLookup());
+    System.out.println("Available Keys : " + catalog.getAvailableKeys());
+    System.out.println("Assigned Keys : " + catalog.getAssignedKeys());
 
     System.out.println("\n# Creating room => ");
-    Room room = new Room(RoomType.SINGLE, 100.0);
+    Room room = singleRoomFactory.createRoom(100);
 
     System.out.println("\n# Booking room => ");
-    RoomBooking booking = service.bookRoom(guest, room, LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+    RoomBooking booking = system.bookRoom(guest, room, LocalDateTime.now(), LocalDateTime.now().plusDays(3));
 
     System.out.println("\n# Checking in => ");
-    service.checkIn(booking.getBookingId());
+    system.checkIn(booking.getBookingId());
 
     System.out.println("\n# Sending check-in notification");
     notifier.notifyObservers("Check-in successful");
@@ -74,6 +84,9 @@ public class HotelManagementRunner {
     RoomHouseKeeping roomHouseKeeping = new RoomHouseKeeping(houseKeeper, LocalDateTime.now().minusMinutes(1), "cleaning");
     room.addHouseKeeping(roomHouseKeeping);
 
+    Service service = new FoodService("Coleslaw sandwich", 35);
+    room.addService(service);
+
     System.out.println("\n# Booking Details => ");
     System.out.println(booking);
 
@@ -81,16 +94,16 @@ public class HotelManagementRunner {
 //    service.cancelRoomBooking(booking.getBookingId());
 
     System.out.println("\n# Checking out => ");
-    service.checkOut(booking.getBookingId(), new CardPayment());
+    system.checkOut(booking.getBookingId(), new CardPayment());
 
     System.out.println("\n# Booking Details => ");
     System.out.println(booking);
 
     System.out.println("\n# Printing catalog => ");
-    System.out.println(catalog.getGuestsLookup());
-    System.out.println(catalog.getEmployeeLookup());
-    System.out.println(catalog.getRoomsLookup());
-    System.out.println(catalog.getAvailableKeys());
-    System.out.println(catalog.getAssignedKeys());
+    System.out.println("Guests : " + catalog.getGuestsLookup());
+    System.out.println("Employees : " + catalog.getEmployeeLookup());
+    System.out.println("Rooms : " + catalog.getRoomsLookup());
+    System.out.println("Available Keys : " + catalog.getAvailableKeys());
+    System.out.println("Assigned Keys : " + catalog.getAssignedKeys());
   }
 }

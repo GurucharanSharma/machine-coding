@@ -1,7 +1,7 @@
 package hotelmanagement.person.employee;
 
 import hotelmanagement.catalog.Catalog;
-import hotelmanagement.domain.Room;
+import hotelmanagement.domain.room.Room;
 import hotelmanagement.person.Account;
 import hotelmanagement.person.Guest;
 

@@ -1,6 +1,7 @@
 package hotelmanagement.domain;
 
 import hotelmanagement.common.BookingStatus;
+import hotelmanagement.domain.room.Room;
 import hotelmanagement.person.Guest;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -30,9 +31,6 @@ public class RoomBooking {
     this.room = room;
     this.invoices = new ArrayList<>();
     this.bookingStatus = BookingStatus.CONFIRMED;
-
-    // Adding room price as the initial invoice
-    this.invoices.add(new Invoice(room.getPrice()));
   }
 
   public void cancelBooking() {
@@ -77,7 +75,7 @@ public class RoomBooking {
     return room;
   }
 
-  public List<Invoice> getInvoice() {
+  public List<Invoice> getInvoices() {
     return invoices;
   }
 

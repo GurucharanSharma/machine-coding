@@ -1,9 +1,12 @@
-package hotelmanagement.domain;
+package hotelmanagement.domain.room;
 
 import hotelmanagement.HotelManagementUtil;
 import hotelmanagement.common.RoomStatus;
 import hotelmanagement.common.RoomType;
+import hotelmanagement.domain.RoomHouseKeeping;
+import hotelmanagement.domain.RoomKey;
 import hotelmanagement.exception.RoomBookingException;
+import hotelmanagement.service.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ public class Room {
   private final RoomType roomType;
   private final List<RoomKey> roomKeys;
   private final List<RoomHouseKeeping> roomHouseKeepings;
+  private final List<Service> services;
   private RoomStatus roomStatus;
 
   public Room(RoomType roomType, double price) {
@@ -26,6 +30,7 @@ public class Room {
     this.roomStatus = RoomStatus.AVAILABLE;
     this.roomKeys = new ArrayList<>();
     this.roomHouseKeepings = new ArrayList<>();
+    this.services = new ArrayList<>();
     this.price = price;
   }
 
@@ -55,6 +60,10 @@ public class Room {
 
   public void setRoomStatus(RoomStatus roomStatus) {
     this.roomStatus = roomStatus;
+  }
+
+  public List<Service> getServices() {
+    return services;
   }
 
   public void addHouseKeeping(RoomHouseKeeping roomHouseKeeping) {
@@ -112,6 +121,11 @@ public class Room {
     }
   }
 
+  public void addService(Service service) {
+    service.setIssuedAt(LocalDateTime.now());
+    this.services.add(service);
+  }
+
   @Override
   public String toString() {
     return "Room{" +
@@ -121,6 +135,7 @@ public class Room {
         ", roomType=" + roomType +
         ", roomKeys=" + roomKeys +
         ", roomHouseKeepings=" + roomHouseKeepings +
+        ", services=" + services +
         ", roomStatus=" + roomStatus +
         '}';
   }

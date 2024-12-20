@@ -1,6 +1,6 @@
 package hotelmanagement.catalog;
 
-import hotelmanagement.domain.Room;
+import hotelmanagement.domain.room.Room;
 import hotelmanagement.domain.RoomBooking;
 import hotelmanagement.common.RoomStatus;
 import hotelmanagement.common.RoomType;

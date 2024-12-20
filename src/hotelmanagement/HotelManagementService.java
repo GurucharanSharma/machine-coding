@@ -2,14 +2,15 @@ package hotelmanagement;
 
 import hotelmanagement.catalog.Catalog;
 import hotelmanagement.common.BookingStatus;
-import hotelmanagement.domain.Room;
+import hotelmanagement.domain.Invoice;
 import hotelmanagement.domain.RoomBooking;
 import hotelmanagement.domain.RoomKey;
+import hotelmanagement.domain.room.Room;
 import hotelmanagement.exception.HotelManagementException;
 import hotelmanagement.payment.Payment;
 import hotelmanagement.person.Guest;
+import hotelmanagement.service.Service;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 public class HotelManagementService {
@@ -86,10 +87,26 @@ public class HotelManagementService {
     RoomBooking booking = catalog.getBookingsLookup().get(bookingId);
     if (booking.getBookingStatus() == BookingStatus.CONFIRMED) {
       Room room = booking.getRoom();
-      double amount = room.getPrice() * ChronoUnit.DAYS.between(booking.getCheckInDate(), booking.getCheckOutDate());
+      double roomCharge = room.getPrice() * booking.getDuration();
+      double invoice = booking.getInvoices().stream().map(Invoice::getAmount).mapToDouble(Double::doubleValue).sum();
+      double serviceCharge = room.getServices().stream().map(Service::getPrice).mapToDouble(Double::doubleValue).sum();
+      double amount = invoice + roomCharge + serviceCharge;
+
+      ///// Print Invoice ///////////////////
+      System.out.println("===== Invoice =====");
+      System.out.println("Room Charge : " + room.getPrice() + " X " + booking.getDuration() + " = " + roomCharge);
+      for (Invoice i : booking.getInvoices()) {
+        System.out.printf("%s : %f\n", i.getDescription(), i.getAmount());
+      }
+      for (Service s : room.getServices()) {
+        System.out.printf("%s : %f\n", s.getDescription(), s.getPrice());
+      }
+      System.out.println("Total : " + amount);
+      ///////////////////////////////////////
+
       if (payment.processPayment(amount)) {
-        room.checkOut();
         room.getRoomKeys().forEach(this::unassignKey);
+        room.checkOut();
         catalog.getBookingsLookup().remove(bookingId);
         System.out.println("Checkout successful!");
       } else {

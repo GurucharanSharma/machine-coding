@@ -5,6 +5,7 @@ import hotelmanagement.common.RoomType;
 import hotelmanagement.domain.Room;
 import hotelmanagement.domain.RoomBooking;
 import hotelmanagement.domain.RoomHouseKeeping;
+import hotelmanagement.notification.Notifier;
 import hotelmanagement.payment.CardPayment;
 import hotelmanagement.person.Account;
 import hotelmanagement.person.Guest;
@@ -19,6 +20,7 @@ public class HotelManagementRunner {
   public static void main(String[] args) {
     HotelManagementService service = HotelManagementService.getInstance();
     Catalog catalog = service.getCatalog();
+    Notifier notifier = new Notifier();
 
     System.out.println("# Creating Accounts => ");
     Account guestAccount = Account.createAccount("guest", "guest");
@@ -33,6 +35,12 @@ public class HotelManagementRunner {
     Receptionist receptionist = new Receptionist("C", "C", "c.c@example.com", "3216549870", receptionistAccount);
     HouseKeeper houseKeeper = new HouseKeeper("D", "D", "d.d@example.com", "7418529630", houseKeeperAccount);
     Server server = new Server("E", "E", "e.e@example.com", "8521479630", serverAccount);
+
+    System.out.println("\n# Adding observers => ");
+    notifier.addObserver(guest);
+    notifier.addObserver(manager);
+    notifier.addObserver(receptionist);
+    notifier.addObserver(houseKeeper);
 
     System.out.println("\n# Adding employees => ");
     manager.addEmployee(catalog, manager);
@@ -59,6 +67,10 @@ public class HotelManagementRunner {
     System.out.println("\n# Checking in => ");
     service.checkIn(booking.getBookingId());
 
+    System.out.println("\n# Sending check-in notification");
+    notifier.notifyObservers("Check-in successful");
+
+    System.out.println("\n# Adding house keeping => ");
     RoomHouseKeeping roomHouseKeeping = new RoomHouseKeeping(houseKeeper, LocalDateTime.now().minusMinutes(1), "cleaning");
     room.addHouseKeeping(roomHouseKeeping);
 

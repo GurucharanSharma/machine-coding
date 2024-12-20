@@ -1,6 +1,8 @@
 package hotelmanagement.person;
 
-public abstract class Person {
+import hotelmanagement.notification.Observer;
+
+public abstract class Person implements Observer {
 
   protected final String firstName;
   protected final String lastName;
@@ -34,5 +36,10 @@ public abstract class Person {
 
   public String getContact() {
     return contact;
+  }
+
+  @Override
+  public void update(String message) {
+    System.out.println("Notification for Guest: " + firstName + " " + lastName + ": " + message);
   }
 }

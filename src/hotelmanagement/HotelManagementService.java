@@ -1,10 +1,10 @@
-package hotelmanagement.service;
+package hotelmanagement;
 
 import hotelmanagement.catalog.Catalog;
+import hotelmanagement.common.BookingStatus;
 import hotelmanagement.domain.Room;
 import hotelmanagement.domain.RoomBooking;
 import hotelmanagement.domain.RoomKey;
-import hotelmanagement.common.BookingStatus;
 import hotelmanagement.exception.HotelManagementException;
 import hotelmanagement.payment.Payment;
 import hotelmanagement.person.Guest;
@@ -21,7 +21,7 @@ public class HotelManagementService {
     this.catalog = new Catalog();
   }
 
-  public synchronized HotelManagementService getInstance() {
+  public synchronized static HotelManagementService getInstance() {
     if (instance == null) {
       instance = new HotelManagementService();
     }
@@ -29,11 +29,18 @@ public class HotelManagementService {
     return instance;
   }
 
+  public Catalog getCatalog() {
+    return catalog;
+  }
+
   public synchronized RoomBooking bookRoom(Guest guest, Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate) {
     try {
       room.bookRoom();
       RoomBooking booking = new RoomBooking(LocalDateTime.now(), checkInDate, checkOutDate, guest, room);
       catalog.getBookingsLookup().put(booking.getBookingId(), booking);
+      System.out.println("Room booked successfully!");
+
+      return booking;
     } catch (Exception e) {
       System.out.println("Error while booking room: " + e.getMessage());
     }
@@ -48,9 +55,9 @@ public class HotelManagementService {
     }
 
     RoomBooking booking = catalog.getBookingsLookup().get(bookingId);
+    booking.getRoom().getRoomKeys().forEach(this::unassignKey);
     booking.cancelBooking();
     catalog.getBookingsLookup().remove(booking.getBookingId());
-    booking.getRoom().getRoomKeys().forEach(this::unassignKey);
     System.out.println("Room booking cancelled successfully!");
   }
 
@@ -84,6 +91,7 @@ public class HotelManagementService {
         room.checkOut();
         room.getRoomKeys().forEach(this::unassignKey);
         catalog.getBookingsLookup().remove(bookingId);
+        System.out.println("Checkout successful!");
       } else {
         throw new HotelManagementException("Payment failed.");
       }

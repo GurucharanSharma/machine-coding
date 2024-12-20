@@ -8,10 +8,22 @@ public class Guest extends Person {
 
   public Guest(String firstName, String lastName, String email, String contact, Account account) {
     super(firstName, lastName, email, contact, account);
-    this.guestId = "G#" + UUID.randomUUID();
+    this.guestId = "G#" + UUID.randomUUID().toString().substring(0, 8);
   }
 
   public String getGuestId() {
     return guestId;
+  }
+
+  @Override
+  public String toString() {
+    return "Guest{" +
+        "firstName='" + firstName + '\'' +
+        ", lastName='" + lastName + '\'' +
+        ", email='" + email + '\'' +
+        ", contact='" + contact + '\'' +
+        ", account=" + account + '\'' +
+        ", guestId='" + guestId +
+        '}';
   }
 }

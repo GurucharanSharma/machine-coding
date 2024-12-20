@@ -23,4 +23,12 @@ public class Invoice {
   public void setAmount(double amount) {
     this.amount = amount;
   }
+
+  @Override
+  public String toString() {
+    return "Invoice{" +
+        "id='" + id + '\'' +
+        ", amount=" + amount +
+        '}';
+  }
 }

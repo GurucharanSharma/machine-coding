@@ -2,11 +2,11 @@ package hotelmanagement.person;
 
 public abstract class Person {
 
-  private final String firstName;
-  private final String lastName;
-  private final String email;
-  private final String contact;
-  private final Account account;
+  protected final String firstName;
+  protected final String lastName;
+  protected final String email;
+  protected final String contact;
+  protected final Account account;
 
   public Person(String firstName, String lastName, String email, String contact, Account account) {
     this.firstName = firstName;

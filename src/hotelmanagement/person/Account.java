@@ -27,4 +27,13 @@ public class Account {
   public AccountStatus getAccountStatus() {
     return accountStatus;
   }
+
+  @Override
+  public String toString() {
+    return "Account{" +
+        "username='" + "XXXXX" + '\'' +
+        ", password='" + "XXXXX" + '\'' +
+        ", accountStatus=" + accountStatus +
+        '}';
+  }
 }

@@ -85,7 +85,7 @@ public class Catalog implements Search {
   }
 
   private void generateRoomKeys() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
       availableKeys.add(new RoomKey(HotelManagementUtil.generateBarcode(10), false, false, LocalDateTime.MIN, "SYSTEM"));
     }
   }

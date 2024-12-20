@@ -4,6 +4,8 @@ import hotelmanagement.common.BookingStatus;
 import hotelmanagement.person.Guest;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class RoomBooking {
@@ -14,20 +16,23 @@ public class RoomBooking {
   private final LocalDateTime checkOutDate;
   private final Guest guest;
   private final Room room;
-  private final Invoice invoice;
+  private final List<Invoice> invoices;
   private final long duration;
   private BookingStatus bookingStatus;
 
   public RoomBooking(LocalDateTime createdDate, LocalDateTime checkInDate, LocalDateTime checkOutDate, Guest guest, Room room) {
-    this.bookingId = "B#" + UUID.randomUUID();
+    this.bookingId = "B#" + UUID.randomUUID().toString().substring(0, 8);
     this.createdDate = createdDate;
     this.checkInDate = checkInDate;
     this.checkOutDate = checkOutDate;
     this.duration = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
     this.guest = guest;
     this.room = room;
-    this.invoice = new Invoice(room.getPrice());
+    this.invoices = new ArrayList<>();
     this.bookingStatus = BookingStatus.CONFIRMED;
+
+    // Adding room price as the initial invoice
+    this.invoices.add(new Invoice(room.getPrice()));
   }
 
   public void cancelBooking() {
@@ -72,11 +77,26 @@ public class RoomBooking {
     return room;
   }
 
-  public Invoice getInvoice() {
-    return invoice;
+  public List<Invoice> getInvoice() {
+    return invoices;
   }
 
   public long getDuration() {
     return duration;
+  }
+
+  @Override
+  public String toString() {
+    return "RoomBooking{" +
+        "bookingId='" + bookingId + '\'' +
+        ", createdDate=" + createdDate +
+        ", checkInDate=" + checkInDate +
+        ", checkOutDate=" + checkOutDate +
+        ", guest=" + guest +
+        ", room=" + room +
+        ", invoice=" + invoices +
+        ", duration=" + duration +
+        ", bookingStatus=" + bookingStatus +
+        '}';
   }
 }

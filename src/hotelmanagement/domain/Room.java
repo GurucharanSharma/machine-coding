@@ -4,6 +4,8 @@ import hotelmanagement.HotelManagementUtil;
 import hotelmanagement.common.RoomStatus;
 import hotelmanagement.common.RoomType;
 import hotelmanagement.exception.RoomBookingException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,13 +19,13 @@ public class Room {
   private final List<RoomHouseKeeping> roomHouseKeepings;
   private RoomStatus roomStatus;
 
-  public Room(RoomType roomType, List<RoomKey> roomKeys, List<RoomHouseKeeping> roomHouseKeepings, double price) {
-    this.roomId = "R#" + UUID.randomUUID();
+  public Room(RoomType roomType, double price) {
+    this.roomId = "R#" + UUID.randomUUID().toString().substring(0, 8);
     this.roomNumber = HotelManagementUtil.generateRoomNumber();
     this.roomType = roomType;
     this.roomStatus = RoomStatus.AVAILABLE;
-    this.roomKeys = roomKeys;
-    this.roomHouseKeepings = roomHouseKeepings;
+    this.roomKeys = new ArrayList<>();
+    this.roomHouseKeepings = new ArrayList<>();
     this.price = price;
   }
 
@@ -102,10 +104,24 @@ public class Room {
       }
 
       roomKey.setActive(true);
+      roomKey.setIssuedAt(LocalDateTime.now());
       this.roomKeys.add(roomKey);
       System.out.println("Room key assigned successfully.");
     } else {
       System.out.println("Room key is already active. Cannot register!");
     }
+  }
+
+  @Override
+  public String toString() {
+    return "Room{" +
+        "price=" + price +
+        ", roomId='" + roomId + '\'' +
+        ", roomNumber='" + roomNumber + '\'' +
+        ", roomType=" + roomType +
+        ", roomKeys=" + roomKeys +
+        ", roomHouseKeepings=" + roomHouseKeepings +
+        ", roomStatus=" + roomStatus +
+        '}';
   }
 }

@@ -13,7 +13,7 @@ public class RoomKey {
   private boolean isActive;
 
   public RoomKey(String barCode, boolean isActive, boolean isMaster, LocalDateTime issuedAt, String issuedBy) {
-    this.keyId = "K#" + UUID.randomUUID();
+    this.keyId = "K#" + UUID.randomUUID().toString().substring(0, 8);
     this.barCode = barCode;
     this.isActive = isActive;
     this.isMaster = isMaster;
@@ -51,5 +51,17 @@ public class RoomKey {
 
   public void setActive(boolean active) {
     isActive = active;
+  }
+
+  @Override
+  public String toString() {
+    return "RoomKey{" +
+        "keyId='" + keyId + '\'' +
+        ", barCode='" + barCode + '\'' +
+        ", isMaster=" + isMaster +
+        ", issuedBy='" + issuedBy + '\'' +
+        ", issuedAt=" + issuedAt +
+        ", isActive=" + isActive +
+        '}';
   }
 }

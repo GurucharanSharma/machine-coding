@@ -2,6 +2,7 @@ package hotelmanagement.domain;
 
 import hotelmanagement.person.employee.HouseKeeper;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class RoomHouseKeeping {
 
@@ -10,10 +11,10 @@ public class RoomHouseKeeping {
   private final long duration;
   private final String comments;
 
-  public RoomHouseKeeping(HouseKeeper houseKeeper, LocalDateTime startedAt, long duration, String comments) {
+  public RoomHouseKeeping(HouseKeeper houseKeeper, LocalDateTime startedAt, String comments) {
     this.houseKeeper = houseKeeper;
     this.startedAt = startedAt;
-    this.duration = duration;
+    this.duration = ChronoUnit.MINUTES.between(startedAt, LocalDateTime.now());
     this.comments = comments;
   }
 

@@ -57,6 +57,8 @@ public class Manager extends Admin {
       Map<String, Person> map = catalog.getPersons().getOrDefault(person.getPersonType(), new ConcurrentHashMap<>());
       map.put(person.getId(), person);
       catalog.getPersons().put(person.getPersonType(), map);
+
+      System.out.println("Account added successfully!");
     }
   }
 }

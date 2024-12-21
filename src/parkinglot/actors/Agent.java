@@ -2,10 +2,11 @@ package parkinglot.actors;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import parkinglot.actions.ParkingActions;
 import parkinglot.catalog.Catalog;
 import parkinglot.common.PersonType;
 
-public class Agent extends Admin {
+public class Agent extends Admin implements ParkingActions {
 
   private final String id;
 
@@ -21,7 +22,7 @@ public class Agent extends Admin {
 
   @Override
   public void viewAccount(Person person) {
-    if (person.getId() != this.getId()) {
+    if (person.getPersonType() != PersonType.AGENT || person.getPersonType() != PersonType.GUEST) {
       System.out.println("You are not authorized to view this account!");
       return;
     }
@@ -32,6 +33,11 @@ public class Agent extends Admin {
 
   @Override
   public void updateAccount(Person person, Catalog catalog) {
+    if (!person.getId().equals(this.getId())) {
+      System.out.println("You can only update your own account!");
+      return;
+    }
+
     System.out.println("Updating account for " + person.getFirstname() + " " + person.getLastname() + " => ");
 
     if (catalog.getPersons().containsKey(person.getPersonType())) {
@@ -54,6 +60,11 @@ public class Agent extends Admin {
 
   @Override
   public void addAccount(Person person, Catalog catalog) {
+    if (person.getPersonType() != PersonType.AGENT || person.getPersonType() != PersonType.GUEST) {
+      System.out.println("You can only add another agent or guest account. Unable to add account!");
+      return;
+    }
+
     System.out.println("Adding account for " + person.getFirstname() + " " + person.getLastname() + " => ");
 
     if (catalog.getPersons().containsKey(person.getPersonType())) {
@@ -62,6 +73,28 @@ public class Agent extends Admin {
       Map<String, Person> map = catalog.getPersons().getOrDefault(person.getPersonType(), new ConcurrentHashMap<>());
       map.put(person.getId(), person);
       catalog.getPersons().put(person.getPersonType(), map);
+
+      System.out.println("Account added successfully!");
     }
+  }
+
+  @Override
+  public void takeTicket() {
+
+  }
+
+  @Override
+  public void scanTicket() {
+
+  }
+
+  @Override
+  public void payTicket() {
+
+  }
+
+  @Override
+  public void parkVehicle() {
+
   }
 }

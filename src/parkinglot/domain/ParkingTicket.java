@@ -1,4 +1,4 @@
-package parkinglot;
+package parkinglot.domain;
 
 import java.time.LocalDateTime;
 import parkinglot.common.ParkingTicketStatus;

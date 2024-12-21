@@ -1,4 +1,4 @@
-package parkinglot;
+package parkinglot.domain;
 
 import parkinglot.common.VehicleType;
 

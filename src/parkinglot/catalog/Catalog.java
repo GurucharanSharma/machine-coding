@@ -3,13 +3,15 @@ package parkinglot.catalog;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import parkinglot.domain.Entrance;
-import parkinglot.domain.Exit;
-import parkinglot.domain.ParkingFloor;
-import parkinglot.domain.ParkingTicket;
 import parkinglot.actors.Person;
 import parkinglot.common.ParkingSpotType;
 import parkinglot.common.PersonType;
+import parkinglot.common.VehicleType;
+import parkinglot.domain.Entrance;
+import parkinglot.domain.Exit;
+import parkinglot.domain.ParkingFloor;
+import parkinglot.domain.ParkingRate;
+import parkinglot.domain.ParkingTicket;
 import parkinglot.parkingspot.ParkingSpot;
 
 public class Catalog {
@@ -20,6 +22,7 @@ public class Catalog {
   private final Map<String, ParkingTicket> parkingTickets;
   private final Map<String, Entrance> entrances;
   private final Map<String, Exit> exits;
+  private final Map<VehicleType, ParkingRate> parkingRates;
 
   public Catalog() {
     this.parkingFloors = new ConcurrentHashMap<>();
@@ -28,6 +31,7 @@ public class Catalog {
     this.parkingTickets = new ConcurrentHashMap<>();
     this.entrances = new ConcurrentHashMap<>();
     this.exits = new ConcurrentHashMap<>();
+    this.parkingRates = new ConcurrentHashMap<>();
   }
 
   public Map<String, ParkingFloor> getParkingFloors() {
@@ -52,5 +56,9 @@ public class Catalog {
 
   public Map<String, Exit> getExits() {
     return exits;
+  }
+
+  public Map<VehicleType, ParkingRate> getParkingRates() {
+    return parkingRates;
   }
 }

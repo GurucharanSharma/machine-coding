@@ -10,6 +10,21 @@ public class LargeSpot implements ParkingSpot {
   private boolean isAvailable;
 
   @Override
+  public String getSpotId() {
+    return spotId;
+  }
+
+  @Override
+  public Vehicle getVehicle() {
+    return vehicle;
+  }
+
+  @Override
+  public boolean isAvailable() {
+    return isAvailable;
+  }
+
+  @Override
   public void parkVehicle(Vehicle vehicle) {
     if (isAvailable) {
       this.vehicle = vehicle;

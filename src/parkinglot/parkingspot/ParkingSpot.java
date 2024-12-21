@@ -5,6 +5,12 @@ import parkinglot.vehicle.Vehicle;
 
 public interface ParkingSpot {
 
+  String getSpotId();
+
+  Vehicle getVehicle();
+
+  boolean isAvailable();
+
   void parkVehicle(Vehicle vehicle);
 
   void removeVehicle(Vehicle vehicle);
